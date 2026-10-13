@@ -1,0 +1,25 @@
+# Render Blueprint: deployable on a PAID service with persistent disk.
+# See DEPLOY.md before creating a service. No real payments are processed.
+services:
+  - type: web
+    name: decisiongap-os
+    runtime: node
+    plan: 0.5c-512mb
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: SQLITE_FILE
+        value: /var/data/decisiongap.sqlite
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+    disk:
+      name: decisiongap-data
+      mountPath: /var/data
+      sizeGB: 1

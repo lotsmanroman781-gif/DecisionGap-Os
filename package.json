@@ -1,0 +1,16 @@
+{
+  "name": "decisiongap-os",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "description": "DecisionGap OS - cloud-deployable customer intelligence, guarded AI sales, growth experiments and Shopify commerce handoff",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}
