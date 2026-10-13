@@ -1,3 +1,5 @@
+> **Vercel free demo:** This package also supports Vercel Hobby for non-commercial demonstration only. See [VERCEL_FREE_DEMO.md](VERCEL_FREE_DEMO.md). Vercel demo writes are ephemeral and Shopify checkout is disabled.
+
 # DecisionGap OS 1.1 - Cloud Edition
 
 **Customer decision intelligence + merchant-governed AI sales + growth experiments + optional Shopify commerce handoff.**

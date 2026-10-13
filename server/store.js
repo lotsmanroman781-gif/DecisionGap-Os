@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { DatabaseSync } from 'node:sqlite';
 import { initialState } from './data.js';
 const here = path.dirname(fileURLToPath(import.meta.url));
-const filepath = process.env.DATA_FILE ? path.resolve(process.env.DATA_FILE) : path.resolve(here, '../.data/state.json');
+const filepath = process.env.DATA_FILE ? path.resolve(process.env.DATA_FILE) : (process.env.VERCEL ? '/tmp/decisiongap-state.json' : path.resolve(here, '../.data/state.json'));
 const sqlitePath = process.env.SQLITE_FILE ? path.resolve(process.env.SQLITE_FILE) : null;
 let state;
 let db;

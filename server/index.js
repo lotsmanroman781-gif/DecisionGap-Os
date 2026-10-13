@@ -21,6 +21,12 @@ function json(res, status, body, headers = {}) {
   res.end(JSON.stringify(body));
 }
 function readBody(req) {
+  // Vercel may provide a pre-parsed body to Node.js functions.
+  if (req.body !== undefined && req.body !== null) {
+    if (typeof req.body === 'object' && !Buffer.isBuffer(req.body)) return Promise.resolve(req.body);
+    try { return Promise.resolve(JSON.parse(String(req.body))); }
+    catch { return Promise.reject(Object.assign(new Error('Invalid JSON payload.'), { status: 400 })); }
+  }
   return new Promise((resolve, reject) => {
     let body = ''; let failed = false;
     req.on('data', data => {
@@ -233,7 +239,7 @@ async function verifiedShopifyPaidWebhook(req,res) {
   return json(res,200,{ok:true});
 }
 
-const server = http.createServer(async (req, res) => {
+export async function handleRequest(req, res) {
   res.setHeader('x-frame-options', 'DENY');
   res.setHeader('referrer-policy', 'strict-origin-when-cross-origin');
   res.setHeader('x-content-type-options', 'nosniff');
@@ -248,9 +254,9 @@ const server = http.createServer(async (req, res) => {
     console.error('[DecisionGap]', e?.message || e);
     return !res.headersSent && json(res, e.status || 500, { error: e.status ? e.message : 'An unexpected server error occurred.' });
   }
-});
+}
 
-server.listen(PORT, HOST, () => {
+if (!process.env.VERCEL) http.createServer(handleRequest).listen(PORT, HOST, () => {
   loadState();
   console.log(`\n  ✦ DecisionGap OS is running at http://${HOST}:${PORT}`);
   console.log(`  ✦ AI mode: ${process.env.OPENAI_API_KEY ? 'LLM-assisted' : 'Rules-based demo (no API key required)'}`);

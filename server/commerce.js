@@ -5,7 +5,8 @@
 const domain = (process.env.SHOPIFY_SHOP_DOMAIN || '').trim().toLowerCase();
 const token = process.env.SHOPIFY_STOREFRONT_TOKEN || '';
 const version = '2026-07';
-export const commerceEnabled = !!(domain && token);
+// The Vercel Hobby build is a temporary non-commercial demo; real commerce is disabled.
+export const commerceEnabled = !process.env.VERCEL && !!(domain && token);
 if (domain && !/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(domain)) {
   throw new Error('SHOPIFY_SHOP_DOMAIN must be a shop-name.myshopify.com hostname.');
 }
